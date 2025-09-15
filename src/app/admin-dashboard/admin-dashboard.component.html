@@ -1,0 +1,120 @@
+<div class="admin-page">
+  <!-- Background -->
+  <div class="admin-background">
+    <div class="wave-shape"></div>
+  </div>
+
+  <!-- Admin Container -->
+  <div class="admin-container">
+    <!-- Toolbar / Header -->
+    <mat-toolbar class="admin-toolbar" color="primary">
+      <span class="toolbar-title">🍽 Admin Dashboard</span>
+      <span class="spacer"></span>
+      <button mat-raised-button color="accent" class="logout-btn" (click)="logout()">
+        Logout
+      </button>
+    </mat-toolbar>
+
+    <!-- Tabs -->
+    <mat-tab-group class="admin-tabs">
+      <!-- Menu Items Tab -->
+      <mat-tab label="Menu">
+        <div class="table-section" *ngIf="!isLoading; else loading">
+          <!-- Search Bar -->
+          <mat-form-field appearance="outline" class="search-bar">
+            <mat-label>Search menu items</mat-label>
+            <input matInput placeholder="Type name or category" (input)="applyFilter($event)" />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <!-- Menu Table -->
+          <table mat-table [dataSource]="dataSource" class="full-table elegant-table mat-elevation-z2">
+            <!-- ID -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef>ID</th>
+              <td mat-cell *matCellDef="let el">{{ el.id }}</td>
+            </ng-container>
+
+            <!-- Image -->
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef>Image</th>
+              <td mat-cell *matCellDef="let el">
+                <img [src]="el.imageUrl || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg'" class="thumb" />
+              </td>
+            </ng-container>
+
+            <!-- Name -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let el">{{ el.name }}</td>
+            </ng-container>
+
+            <!-- Price -->
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef>Price</th>
+              <td mat-cell *matCellDef="let el">₹{{ el.price }}</td>
+            </ng-container>
+
+            <!-- Category -->
+            <ng-container matColumnDef="category">
+              <th mat-header-cell *matHeaderCellDef>Category</th>
+              <td mat-cell *matCellDef="let el">{{ el.categoryName }}</td>
+            </ng-container>
+
+            <!-- Veg -->
+            <ng-container matColumnDef="veg">
+              <th mat-header-cell *matHeaderCellDef>Veg</th>
+              <td mat-cell *matCellDef="let el">
+                <span [class.veg-chip]="el.veg" [class.nonveg-chip]="!el.veg">
+                  {{ el.veg ? "🟢 Veg" : "🔴 Non-Veg" }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- Active -->
+            <ng-container matColumnDef="active">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let el">
+                <span [class.active-chip]="el.active" [class.inactive-chip]="!el.active">
+                  {{ el.active ? "Active" : "Inactive" }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- Actions -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let el">
+                <button mat-icon-button color="primary" (click)="openEdit(el)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="confirmDelete(el)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <!-- Table Rows -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <!-- Add Item Floating Button -->
+          <button mat-fab color="warn" class="add-btn" (click)="openAdd()" aria-label="Add item">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <!-- Loading Template -->
+        <ng-template #loading>
+          <div class="loading">Loading items…</div>
+        </ng-template>
+      </mat-tab>
+
+      <!-- Categories Tab -->
+      <mat-tab label="Categories">
+        <app-admin-categories></app-admin-categories>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

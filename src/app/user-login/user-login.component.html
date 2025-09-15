@@ -1,0 +1,86 @@
+<!-- login.component.html -->
+
+<div class="auth-page">
+  <!-- Background Elements -->
+  <div class="auth-background">
+    <div class="wave-shape"></div>
+    <div class="floating-food food-1"></div>
+    <div class="floating-food food-2"></div>
+    <div class="floating-food food-3"></div>
+  </div>
+
+  <!-- Auth Container -->
+  <div class="auth-container">
+    <div class="auth-card">
+      <!-- Header Section -->
+      <div class="auth-header">
+        <div class="brand-section">
+          <h1 class="brand-text">TruYum</h1>
+          <span class="brand-subtitle">Restaurant</span>
+        </div>
+        <h2 class="auth-title">Welcome Back</h2>
+        <p class="auth-subtitle">Sign in to your account to continue</p>
+      </div>
+
+      <!-- Form Section -->
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
+        <!-- Username -->
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              formControlName="username" 
+              class="elegant-input"
+              placeholder="Enter your username"
+              required>
+            <div class="input-border"></div>
+          </div>
+          <div class="error-message" *ngIf="loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched">
+            Username is required
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrapper">
+            <input 
+              type="password" 
+              formControlName="password" 
+              class="elegant-input"
+              placeholder="Enter your password"
+              required>
+            <div class="input-border"></div>
+          </div>
+          <div class="error-message" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+            Password is required
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button 
+          type="submit" 
+          class="elegant-submit-btn" 
+          [disabled]="loginForm.invalid"
+          [class.disabled]="loginForm.invalid">
+          <mat-icon>login</mat-icon>
+          <span>Sign In</span>
+          <div class="btn-shine"></div>
+        </button>
+      </form>
+
+      <!-- Footer Links -->
+      <div class="auth-footer">
+        <p class="footer-text">
+          Don't have an account? 
+          <a (click)="goToRegister()" class="auth-link">Sign up here</a>
+        </p>
+        <div class="divider">
+          <span>or</span>
+        </div>
+        <a routerLink="/" class="back-home-link">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,154 @@
+.elegant-navbar {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(100, 116, 139, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 15px 0;
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-section {
+  flex: 1;
+}
+
+.brand-logo {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.brand-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #14b8a6;
+  line-height: 1;
+}
+
+.brand-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  margin-top: -2px;
+}
+
+.nav-center {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  flex: 2;
+  justify-content: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #cbd5e1;
+  font-weight: 400;
+  font-size: 15px;
+  position: relative;
+  padding: 8px 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #14b8a6;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #14b8a6;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.order-now-btn {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+}
+
+.order-now-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4);
+}
+
+.admin-links {
+  display: flex;
+  gap: 15px;
+}
+
+.admin-link {
+  text-decoration: none;
+  color: #64748b;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.admin-link:hover {
+  color: #94a3b8;
+  background: rgba(100, 116, 139, 0.1);
+}
+
+.main-content {
+  margin-top: 80px;
+  padding: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .nav-center {
+    gap: 20px;
+  }
+
+  .nav-right {
+    justify-content: center;
+  }
+
+  .admin-links {
+    display: none;
+  }
+}

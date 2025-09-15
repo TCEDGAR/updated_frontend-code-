@@ -1,0 +1,52 @@
+<mat-toolbar color="primary" class="mat-elevation-z4 elegant-navbar" style="padding:0 16px;">
+  <div class="app-container" style="display:flex;align-items:center;gap:24px;width:100%;">
+    
+    <!-- Brand -->
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a routerLink="/" style="display:flex;align-items:center;text-decoration:none;color:white;">
+        <span style="font-weight:700;font-size:30px;">TruYum</span>
+        <span style="margin-left:4px;font-size:16px;">Restaurant</span>
+      </a>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav style="display:flex;gap:14px;margin-left:24px;">
+      <a mat-button routerLink="/" style="color:white;">Home</a>
+      <a mat-button routerLink="/menu" style="color:white;">
+        <mat-icon>restaurant_menu</mat-icon> Menu
+      </a>
+      <a mat-button routerLink="/cart" style="color:white;">
+        <mat-icon>shopping_cart</mat-icon> Cart
+      </a>
+    </nav>
+
+    <span style="flex:1 1 auto"></span>
+
+    <!-- Right-side Auth/Admin Buttons -->
+    <div style="display:flex;gap:12px;align-items:center;">
+      <!-- Show when NOT logged in -->
+      <ng-container *ngIf="!isLoggedIn">
+        <a mat-button routerLink="/register" style="color:white;">
+          <mat-icon>person_add</mat-icon> Sign Up
+        </a>
+        <a mat-button routerLink="/user-login" style="color:white;">
+          <mat-icon>login</mat-icon> Sign In
+        </a>
+      </ng-container>
+
+      <!-- Show when logged in -->
+      <ng-container *ngIf="isLoggedIn">
+        <button mat-button (click)="logout()" style="color:white;">
+          <mat-icon>account_circle</mat-icon> Logout
+        </button>
+      </ng-container>
+
+      <!-- Admin Login always visible -->
+      <a mat-button routerLink="/admin-login" style="color:white;">
+        <mat-icon>admin_panel_settings</mat-icon> Admin
+      </a>
+    </div>
+  </div>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

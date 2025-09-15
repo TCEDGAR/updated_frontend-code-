@@ -1,0 +1,111 @@
+<div class="confirmation-background">
+  <div class="app-container">
+    <div class="confirmation-card elegant-card" *ngIf="order">
+      <!-- Success Header -->
+      <div class="success-header">
+        <div class="success-icon">
+          <div class="check-mark">✓</div>
+        </div>
+        <h1 class="success-title">Order Confirmed!</h1>
+        <p class="success-subtitle">Thank you for choosing TruYum. Your delicious meal is on its way!</p>
+      </div>
+
+      <!-- Order Details -->
+      <div class="order-details">
+        <div class="detail-row">
+          <span class="detail-label">Order ID</span>
+          <span class="detail-value">#{{ order.id }}</span>
+        </div>
+        
+        <div class="detail-row">
+          <span class="detail-label">Total Amount</span>
+          <span class="detail-value amount">₹{{ finalTotal }}</span>
+        </div>
+        
+        <div class="detail-row">
+          <span class="detail-label">Order Date</span>
+          <span class="detail-value">{{ (order.placedAt || order.date) | date:'dd MMM yyyy, h:mm a' }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Estimated Delivery</span>
+          <span class="detail-value">30-45 minutes</span>
+        </div>
+      </div>
+
+      <!-- Order Items -->
+      <div class="order-items">
+        <h3 class="items-title">Your Order</h3>
+        <div class="items-list">
+          <div class="order-item" *ngFor="let item of order.items">
+            <div class="item-info">
+              <span class="item-name">{{ item.menuItemName || item.MenuItemName }}</span>
+              <span class="item-quantity">× {{ item.quantity || item.Quantity }}</span>
+            </div>
+            <div class="item-badge">
+              <span class="elegant-chip">{{ getItemType(item) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          class="elegant-button primary-btn"
+          (click)="goHome()"
+        >
+          <mat-icon>home</mat-icon>
+          Continue Shopping
+        </button>
+        
+        <button 
+          mat-raised-button 
+          color="accent" 
+          class="elegant-button secondary-btn"
+          (click)="goToOrderHistory()"
+        >
+          <mat-icon>history</mat-icon>
+          Order History
+        </button>
+      </div>
+
+      <!-- Delivery Status -->
+      <div class="delivery-status">
+        <div class="status-timeline">
+          <div class="status-step active">
+            <div class="step-icon">📝</div>
+            <span>Order Placed</span>
+          </div>
+          <div class="status-line"></div>
+          <div class="status-step">
+            <div class="step-icon">👨‍🍳</div>
+            <span>Preparing</span>
+          </div>
+          <div class="status-line"></div>
+          <div class="status-step">
+            <div class="step-icon">🚚</div>
+            <span>On the Way</span>
+          </div>
+          <div class="status-line"></div>
+          <div class="status-step">
+            <div class="step-icon">🎉</div>
+            <span>Delivered</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Not Found -->
+    <div class="error-card elegant-card" *ngIf="!order">
+      <div class="error-icon">❌</div>
+      <h3>Order Not Found</h3>
+      <p>We couldn't find your order details. Please try again or contact support.</p>
+      <button mat-raised-button color="primary" class="elegant-button" (click)="goHome()">
+        Go to Home
+      </button>
+    </div>
+  </div>
+</div>

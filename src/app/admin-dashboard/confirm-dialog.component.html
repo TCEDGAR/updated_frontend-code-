@@ -1,0 +1,27 @@
+<div class="confirm-dialog">
+  <!-- Icon -->
+  <div class="dialog-icon">
+    <mat-icon class="warning-icon">warning</mat-icon>
+  </div>
+
+  <!-- Dialog Title -->
+  <h2 mat-dialog-title class="dialog-title">
+    {{ data.title || 'Confirm Action' }}
+  </h2>
+
+  <!-- Dialog Message -->
+  <div mat-dialog-content class="dialog-message">
+    {{ data.message || 'Are you sure you want to proceed?' }}
+  </div>
+
+  <!-- Dialog Actions -->
+  <mat-dialog-actions align="center" class="dialog-actions">
+    <button mat-stroked-button class="cancel-btn" (click)="close(false)">
+      Cancel
+    </button>
+    <button mat-flat-button color="warn" class="confirm-btn" (click)="close(true)">
+      <mat-icon>delete</mat-icon>
+      Delete
+    </button>
+  </mat-dialog-actions>
+</div>

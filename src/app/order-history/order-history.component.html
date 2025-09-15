@@ -1,0 +1,67 @@
+<div class="auth-page">
+  <!-- Background Elements -->
+  <div class="auth-background">
+    <div class="wave-shape"></div>
+    <div class="floating-food food-1"></div>
+    <div class="floating-food food-2"></div>
+    <div class="floating-food food-3"></div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="auth-container order-history-container">
+    <!-- Page Header -->
+    <div class="auth-header">
+      <h2 class="auth-title">📜 Your Order History</h2>
+      <p class="auth-subtitle">All your previous orders at a glance</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="error-card elegant-card" *ngIf="!orders || orders.length === 0">
+      <div class="error-icon">🗂️</div>
+      <h3>No past orders</h3>
+      <p>Once you place orders, they will appear here</p>
+      <button mat-raised-button color="primary" class="elegant-submit-btn" (click)="goHome()">
+        Go to Home
+      </button>
+    </div>
+
+    <!-- Order Cards -->
+    <div class="order-grid" *ngIf="orders && orders.length > 0">
+      <div class="auth-card order-card" *ngFor="let order of orders">
+        <div class="order-card-header">
+          <h3>Order #{{ order.id }}</h3>
+          <span class="detail-value">{{ order.placedAt | date:'short' }}</span>
+        </div>
+
+        <div class="order-card-body">
+          <div class="detail-row">
+            <span class="detail-label">Total Amount</span>
+            <span class="detail-value amount">₹{{ order.total }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Status</span>
+            <span class="detail-value" [class.completed]="order.status === 'Completed'">{{ order.status }}</span>
+          </div>
+
+          <div class="order-items">
+            <h3 class="items-title">Items</h3>
+            <div class="items-list">
+              <div class="order-item" *ngFor="let item of order.items">
+                <div class="item-info">
+                  <span class="item-name">{{ item.menuItemName || item.MenuItemName }}</span>
+                  <span class="item-quantity">× {{ item.quantity || item.Quantity }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-card-footer">
+          <button mat-raised-button color="primary" class="elegant-submit-btn">
+            View Details
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

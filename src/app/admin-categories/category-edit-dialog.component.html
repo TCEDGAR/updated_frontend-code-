@@ -1,0 +1,34 @@
+<h2 mat-dialog-title class="dialog-title">
+  {{ mode === 'add' ? 'Add Category' : 'Edit Category' }}
+</h2>
+
+<div mat-dialog-content>
+  <form [formGroup]="form" class="dialog-form">
+    <!-- Category Name -->
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <!-- Active Checkbox -->
+    <mat-checkbox formControlName="active">Active</mat-checkbox>
+  </form>
+</div>
+
+<div mat-dialog-actions align="end" class="dialog-actions">
+  <!-- Cancel -->
+  <button mat-stroked-button class="cancel-btn" (click)="close()">
+    Cancel
+  </button>
+
+  <!-- Save / Add -->
+  <button
+    mat-flat-button
+    color="primary"
+    class="save-btn"
+    (click)="save()"
+    [disabled]="form.invalid"
+  >
+    {{ mode === 'add' ? 'Add' : 'Save' }}
+  </button>
+</div>

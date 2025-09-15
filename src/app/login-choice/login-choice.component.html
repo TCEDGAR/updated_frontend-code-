@@ -1,0 +1,45 @@
+<div class="login-choice-background">
+  <div class="login-choice-container">
+    <div class="welcome-card elegant-card">
+      <!-- Brand Header -->
+      <div class="brand-header">
+        <div class="logo-circle">
+          <span class="logo-text">🍴</span>
+        </div>
+        <h1 class="brand-title gradient-text">TruYum</h1>
+        <p class="brand-subtitle">Delicious food delivered fresh to your doorstep</p>
+      </div>
+
+      <!-- Choice Buttons -->
+      <div class="choice-buttons">
+        <!-- Customer Login -->
+        <button class="choice-btn user-btn" (click)="goToUserLogin()">
+          <div class="btn-icon">👤</div>
+          <div class="btn-content">
+            <h3>Customer Login</h3>
+            <p>Order your favorite meals</p>
+          </div>
+          <div class="btn-arrow">→</div>
+        </button>
+
+        <!-- Admin Login -->
+        <button class="choice-btn admin-btn" (click)="goToAdminLogin()">
+          <div class="btn-icon">⚡</div>
+          <div class="btn-content">
+            <h3>Admin Panel</h3>
+            <p>Manage restaurant operations</p>
+          </div>
+          <div class="btn-arrow">→</div>
+        </button>
+      </div>
+
+      <!-- Register Section -->
+      <div class="register-section">
+        <p class="register-text">Don't have an account?</p>
+        <button class="register-btn elegant-button" (click)="goToRegister()">
+          Create Account
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

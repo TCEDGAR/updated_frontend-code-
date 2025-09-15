@@ -1,0 +1,459 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+/* =============================
+   Admin Dashboard Page Layout
+============================= */
+.admin-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  position: relative;
+  padding-top: 60px;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Background wave */
+.admin-background {
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  height: 300px;
+  background: linear-gradient(135deg, rgba(20,184,166,0.08) 0%, rgba(13,148,136,0.04) 100%);
+  border-radius: 0 0 50% 50%;
+  z-index: 1;
+}
+
+/* Floating background elements */
+.admin-background::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(20, 184, 166, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(13, 148, 136, 0.05) 0%, transparent 50%);
+  animation: float 20s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(-2%, 2%) rotate(120deg); }
+  66% { transform: translate(2%, -2%) rotate(240deg); }
+}
+
+/* Admin container */
+.admin-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* =============================
+   Toolbar
+============================= */
+.admin-toolbar {
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
+  color: #fff;
+  border-radius: 20px;
+  padding: 0 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-toolbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.toolbar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logout-btn {
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border-radius: 12px;
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+/* =============================
+   Tabs
+============================= */
+.admin-tabs {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.mat-mdc-tab-group {
+  font-family: 'Inter', sans-serif;
+}
+
+.mat-mdc-tab-label {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7) !important;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.mat-mdc-tab-label.mdc-tab--active {
+  color: #14b8a6 !important;
+}
+
+.mdc-tab-indicator__content--underline {
+  background-color: #14b8a6 !important;
+  height: 3px;
+  border-radius: 2px;
+}
+
+/* =============================
+   Search box
+============================= */
+.search-wrapper {
+  padding: 20px;
+}
+
+.elegant-search-box {
+  display: flex;
+  align-items: center;
+  background: rgba(30,41,59,0.8);
+  border-radius: 25px;
+  padding: 12px 20px;
+  color: #fff;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  max-width: 400px;
+}
+
+.elegant-search-box:hover {
+  background: rgba(30,41,59,0.9);
+  border-color: rgba(20, 184, 166, 0.3);
+}
+
+.elegant-search-box:focus-within {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+}
+
+.search-icon {
+  margin-right: 12px;
+  font-size: 18px;
+}
+
+.elegant-search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+}
+
+.elegant-search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* =============================
+   Table Section
+============================= */
+.table-section {
+  position: relative;
+}
+
+/* =============================
+   Table Styling - UPDATED FOR WHITE TEXT
+============================= */
+.full-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  margin: 0 20px;
+  max-width: calc(100% - 40px);
+}
+
+/* Header */
+.mat-mdc-header-cell {
+  background: rgba(20,184,166,0.2) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.5px;
+  padding: 16px !important;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif !important;
+  border-bottom: 2px solid #14b8a6;
+}
+
+/* All cell text to white */
+.mat-mdc-cell {
+  font-size: 15px !important;
+  padding: 16px !important;
+  color: #ffffff !important;
+  font-family: 'Inter', sans-serif !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Row background */
+.mat-mdc-row {
+  transition: all 0.3s ease;
+}
+
+.mat-mdc-row:nth-child(even) {
+  background-color: rgba(20,20,30,0.3);
+}
+
+.mat-mdc-row:hover {
+  background-color: rgba(20,184,166,0.15) !important;
+  transform: scale(1.001);
+}
+
+/* =============================
+   Chips (Veg/Non-Veg/Status) - UPDATED FOR BETTER CONTRAST
+============================= */
+.veg-chip, .nonveg-chip, .active-chip, .inactive-chip {
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.veg-chip {
+  color: #bbf7d0;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.2));
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.nonveg-chip {
+  color: #fecaca;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.active-chip {
+  color: #6ee7b7;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(13, 148, 136, 0.2));
+  border-color: rgba(20, 184, 166, 0.3);
+}
+
+.inactive-chip {
+  color: #fdba74;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+/* =============================
+   Thumbnails
+============================= */
+.thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.thumb:hover {
+  transform: scale(1.1);
+  border-color: #14b8a6;
+  box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
+}
+
+/* =============================
+   Action Buttons
+============================= */
+.action-btn {
+  margin: 0 4px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.edit-btn {
+  background: rgba(20, 184, 166, 0.2) !important;
+  color: #14b8a6 !important;
+  border: 1px solid rgba(20, 184, 166, 0.3);
+}
+
+.edit-btn:hover {
+  background: rgba(20, 184, 166, 0.3) !important;
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+}
+
+.delete-btn {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #ef4444 !important;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.3) !important;
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+/* =============================
+   Floating Add Button
+============================= */
+.add-btn {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background: linear-gradient(135deg, #14b8a6, #0d9488) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  width: 64px;
+  height: 64px;
+  z-index: 1000;
+}
+
+.add-btn:hover {
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 15px 40px rgba(20,184,166,0.4);
+  background: linear-gradient(135deg, #0d9488, #0f766e) !important;
+}
+
+.add-btn mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+/* =============================
+   Loading Text - UPDATED FOR WHITE TEXT
+============================= */
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: #ffffff;
+  font-size: 20px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+
+/* =============================
+   Responsive Design
+============================= */
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 15px;
+  }
+  
+  .admin-toolbar {
+    padding: 0 20px;
+    height: 70px;
+  }
+  
+  .toolbar-title {
+    font-size: 22px;
+  }
+  
+  .full-table {
+    margin: 0 10px;
+    max-width: calc(100% - 20px);
+  }
+  
+  .elegant-search-box {
+    max-width: 100%;
+  }
+  
+  .add-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+  }
+  
+  .thumb {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .action-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Custom Material Overrides */
+.mat-mdc-dialog-container {
+  border-radius: 16px !important;
+  background: rgba(30, 41, 59, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  color: white !important;
+}
+
+.mat-mdc-snack-bar-container {
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #14b8a6, #0d9488) !important;
+  color: white !important;
+}
+
+/* Tab content styling */
+.mat-mdc-tab-body-content {
+  padding: 0;
+  background: transparent;
+}

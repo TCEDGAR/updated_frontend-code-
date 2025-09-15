@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+.confirm-dialog {
+  padding: 20px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  min-width: 400px;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+  border-radius: 16px;
+}
+
+.dialog-icon {
+  margin-bottom: 20px;
+}
+
+.warning-icon {
+  font-size: 48px !important;
+  width: 48px !important;
+  height: 48px !important;
+  color: #f59e0b;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+  border-radius: 50%;
+  padding: 12px;
+  animation: pulse 2s infinite;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(245, 158, 11, 0.3);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.dialog-title {
+  font-family: 'Playfair Display', serif !important;
+  font-weight: 600;
+  font-size: 22px;
+  color: #ffffff;
+  margin: 10px 0 20px 0;
+}
+
+.dialog-message {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 20px 0 30px 0;
+  line-height: 1.5;
+}
+
+.dialog-actions {
+  gap: 15px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 20px;
+}
+
+.cancel-btn {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  border-radius: 12px;
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.cancel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: #ffffff !important;
+}
+
+.confirm-btn {
+  font-weight: 600;
+  background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+  color: white !important;
+  border-radius: 12px;
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.confirm-btn:hover {
+  background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+}
+
+.confirm-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .confirm-dialog {
+    min-width: 300px;
+    padding: 15px;
+  }
+  
+  .dialog-title {
+    font-size: 18px;
+  }
+  
+  .dialog-message {
+    font-size: 14px;
+  }
+  
+  .warning-icon {
+    font-size: 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
