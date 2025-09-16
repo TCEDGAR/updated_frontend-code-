@@ -22,7 +22,11 @@ export class ConfirmDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  close(result: boolean) {
+  /**
+   * Close the dialog and return a boolean to the parent.
+   * @param result true if confirmed, false if canceled
+   */
+  close(result: boolean = false) {
     this.dialogRef.close(result);
   }
 }

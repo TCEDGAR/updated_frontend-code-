@@ -15,8 +15,14 @@
       <p class="auth-subtitle">All your previous orders at a glance</p>
     </div>
 
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="elegant-loading">
+      <div class="loading-spinner"></div>
+      <p>Loading your order history...</p>
+    </div>
+
     <!-- Empty State -->
-    <div class="error-card elegant-card" *ngIf="!orders || orders.length === 0">
+    <div *ngIf="!isLoading && (!orders || orders.length === 0)" class="error-card elegant-card">
       <div class="error-icon">🗂️</div>
       <h3>No past orders</h3>
       <p>Once you place orders, they will appear here</p>
@@ -26,23 +32,43 @@
     </div>
 
     <!-- Order Cards -->
-    <div class="order-grid" *ngIf="orders && orders.length > 0">
+    <div *ngIf="!isLoading && orders && orders.length > 0" class="order-grid">
       <div class="auth-card order-card" *ngFor="let order of orders">
+        <!-- Card Header -->
         <div class="order-card-header">
           <h3>Order #{{ order.id }}</h3>
-          <span class="detail-value">{{ order.placedAt | date:'short' }}</span>
+          <span class="detail-value">{{ order.placedAt | date:'MM/dd/yy, h:mm a' }}</span>
         </div>
 
+        <!-- Card Body -->
         <div class="order-card-body">
           <div class="detail-row">
+            <span class="detail-label">Subtotal</span>
+            <span class="detail-value">₹{{ order.total || order.Total || 0 }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Tax (5%)</span>
+            <span class="detail-value">₹{{ ((order.total || order.Total || 0) * 0.05).toFixed(2) }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Delivery Fee</span>
+            <span class="detail-value">₹{{ (order.total || order.Total || 0) > 0 ? 50 : 0 }}</span>
+          </div>
+          <div class="detail-row">
             <span class="detail-label">Total Amount</span>
-            <span class="detail-value amount">₹{{ order.total }}</span>
+            <span class="detail-value amount">₹{{ getFinalTotal(order) }}</span>
           </div>
           <div class="detail-row">
             <span class="detail-label">Status</span>
-            <span class="detail-value" [class.completed]="order.status === 'Completed'">{{ order.status }}</span>
+            <span class="detail-value"
+                  [class.completed]="order.status === 'Completed'"
+                  [class.pending]="order.status === 'Placed' || order.status === 'Pending'"
+                  [class.cancelled]="order.status === 'Cancelled'">
+              {{ order.status }}
+            </span>
           </div>
 
+          <!-- Items Ordered -->
           <div class="order-items">
             <h3 class="items-title">Items</h3>
             <div class="items-list">
@@ -56,9 +82,10 @@
           </div>
         </div>
 
+        <!-- Card Footer -->
         <div class="order-card-footer">
-          <button mat-raised-button color="primary" class="elegant-submit-btn">
-            View Details
+          <button mat-raised-button color="primary" class="elegant-submit-btn" (click)="viewOrderDetails(order)">
+            👁️ View Details
           </button>
         </div>
       </div>

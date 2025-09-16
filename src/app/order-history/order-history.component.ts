@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
 })
 export class OrderHistoryComponent implements OnInit {
   orders: any[] = [];
+  isLoading = false;
 
   constructor(private ordersService: OrdersService, private router: Router) {}
 
@@ -28,9 +29,16 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   loadOrders() {
+    this.isLoading = true;
     this.ordersService.history().subscribe({
-      next: (res: any) => this.orders = res,
-      error: (err) => console.error('❌ Failed to fetch order history', err)
+      next: (res: any) => {
+        this.orders = res;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('❌ Failed to fetch order history', err);
+        this.isLoading = false;
+      }
     });
   }
 
@@ -40,5 +48,12 @@ export class OrderHistoryComponent implements OnInit {
 
   viewOrderDetails(order: any) {
     this.router.navigate(['/order-confirmation'], { state: { order } });
+  }
+
+  getFinalTotal(order: any): number {
+    const subtotal = order.total || order.Total || 0;
+    const tax = subtotal * 0.05; // 5% tax
+    const delivery = subtotal > 0 ? 50 : 0; // ₹50 delivery fee
+    return Math.round((subtotal + tax + delivery) * 100) / 100; // Round to 2 decimal places
   }
 }

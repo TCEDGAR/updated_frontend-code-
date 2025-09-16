@@ -48,11 +48,13 @@ export class AdminLoginComponent implements OnInit {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (res: any) => {
+        // Save token + role + username from form
         localStorage.setItem('token', res.token);
         localStorage.setItem('role', res.role);
+        localStorage.setItem('username', this.loginForm.value.username); // ✅ FIXED
 
         if (res.role === 'Admin') {
-          this.snackBar.open('✅ Welcome to Admin Panel!', 'Close', { 
+          this.snackBar.open(`✅ Welcome, ${this.loginForm.value.username}!`, 'Close', { 
             duration: 2000,
             panelClass: ['success-snackbar']
           });

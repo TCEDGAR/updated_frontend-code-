@@ -31,13 +31,7 @@ import { environment } from '../../environments/environments';
 })
 export class AdminEditDialogComponent implements OnInit {
   form: FormGroup;
-  categories: any[] = [
-    { id: 1, name: 'Pizza' },
-    { id: 2, name: 'Main Course' },
-    { id: 3, name: 'Salads' },
-    { id: 4, name: 'Beverages' },
-    { id: 5, name: 'Desserts' }
-  ];
+  categories: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -48,20 +42,24 @@ export class AdminEditDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.form = this.fb.group({
-    }
-    )
-    // Mock categories for demonstration
-    this.categories = [
-      { id: 1, name: 'Pizza' },
-      { id: 2, name: 'Main Course' },
-      { id: 3, name: 'Salads' },
-      { id: 4, name: 'Beverages' },
-      { id: 5, name: 'Desserts' }
-    ];
+      name: [data?.item?.name || '', Validators.required],
+      description: [data?.item?.description || ''],
+      price: [data?.item?.price || 0, Validators.required],
+      categoryId: [data?.item?.categoryId || null, Validators.required],
+      veg: [data?.item?.veg ?? true],
+      imageUrl: [data?.item?.imageUrl || ''],
+      active: [data?.item?.active ?? true]
+    });
   }
 
   ngOnInit(): void {
-    // Categories are now mock data - in real app would fetch from API
+    this.http.get<any[]>(`${environment.apiUrl}/categories`).subscribe({
+      next: (res) => (this.categories = res),
+      error: (err) => {
+        console.error('Failed to load categories:', err);
+        this.snack.open('❌ Failed to load categories', 'Close', { duration: 3000 });
+      }
+    });
   }
 
   save() {

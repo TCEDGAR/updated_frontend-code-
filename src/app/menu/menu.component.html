@@ -1,83 +1,136 @@
-<div class="menu-page">
-
-  <!-- Background Elements -->
-  <div class="menu-background">
-    <div class="wave-shape"></div>
-    <div class="floating-food food-1"></div>
-    <div class="floating-food food-2"></div>
-    <div class="floating-food food-3"></div>
-  </div>
-
-  <div class="menu-content app-container">
-    
-    <!-- Header with Cart Count -->
-    <div class="menu-header" style="display: flex; justify-content: space-between; align-items: center;">
-      <div>
-        <h1 class="menu-title">Our Delicious Menu</h1>
-        <p class="menu-subtitle">Discover our carefully crafted dishes</p>
-      </div>
-      <div style="position: relative; font-size: 24px; cursor: pointer;">
-        🛒
-        <span *ngIf="cartItemCount > 0" 
-              style="position: absolute; top: -10px; right: -10px; background:#ef4444; color:#fff; border-radius:50%; padding:2px 8px; font-size:14px;">
-          {{ cartItemCount }}
-        </span>
-      </div>
+<div class="menu-background">
+  <div class="app-container">
+    <!-- Header Section -->
+    <div class="menu-header">
+      <h1 class="menu-title">
+        🍽️ {{ selectedCategory ? selectedCategory + ' Menu' : 'Our Delicious Menu' }}
+      </h1>
+      <p class="menu-subtitle">
+        {{ selectedCategory ? 'Explore our ' + selectedCategory.toLowerCase() + ' selection' : 'Discover flavors that will make your taste buds dance' }}
+      </p>
     </div>
-
-    <!-- Search & Filters -->
+    
+    <!-- Search & Filters Section -->
     <div class="search-filter-section">
-      <div class="elegant-search-box">
-        <div class="search-icon">🔍</div>
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name, category, description..." class="elegant-search-input"/>
+      <!-- Category Filter Chips -->
+      <div class="category-filters" *ngIf="!selectedCategory">
+        <button 
+          mat-chip 
+          class="category-chip"
+          [class.selected]="!selectedCategory"
+          (click)="clearCategoryFilter()"
+        >
+          All Items
+        </button>
+        <button 
+          mat-chip 
+          class="category-chip"
+          *ngFor="let category of availableCategories"
+          [class.selected]="selectedCategory === category"
+          (click)="filterByCategory(category)"
+        >
+          {{ category }}
+        </button>
       </div>
-      <button class="elegant-filter-btn" (click)="showFavouritesOnly = !showFavouritesOnly" [class.active]="showFavouritesOnly">
-        <span class="filter-icon">{{ showFavouritesOnly ? '❤️' : '🤍' }}</span>
-        {{ showFavouritesOnly ? 'Show All' : 'Favourites' }}
-      </button>
+      
+      <!-- Back to All Categories -->
+      <div class="category-back" *ngIf="selectedCategory">
+        <button 
+          mat-stroked-button 
+          (click)="clearCategoryFilter()"
+          class="back-button"
+        >
+          <mat-icon>arrow_back</mat-icon>
+          View All Categories
+        </button>
+      </div>
+      
+      <!-- Search and Favorites Bar -->
+      <div class="search-filter-bar">
+        <div class="search-box">
+          <mat-icon class="search-icon">search</mat-icon>
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            placeholder="Search by name, category, description..."
+            class="search-input"
+          />
+        </div>
+        
+        <button 
+          mat-fab 
+          [color]="showFavouritesOnly ? 'accent' : 'primary'"
+          (click)="showFavouritesOnly = !showFavouritesOnly"
+          class="favourite-toggle"
+          [matTooltip]="showFavouritesOnly ? 'Show All Items' : 'Show Favourites Only'"
+        >
+          <mat-icon>{{ showFavouritesOnly ? 'favorite' : 'favorite_border' }}</mat-icon>
+        </button>
+      </div>
     </div>
 
     <!-- Menu Grid -->
-    <div class="elegant-menu-grid">
-      <div class="elegant-menu-card" *ngFor="let item of filteredMenu">
-
-        <div class="card-image-section">
-          <img class="menu-item-image" [src]="item.imageUrl" [alt]="item.name"/>
+    <div class="menu-grid" *ngIf="filteredMenu.length > 0">
+      <div class="menu-item-card" *ngFor="let item of filteredMenu">
+        <div class="item-image-container">
+          <img 
+            [src]="item.imageUrl || 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg'" 
+            [alt]="item.name"
+            class="item-image"
+          />
           <div class="image-overlay">
-            <button class="favorite-btn" (click)="toggleFavourite(item.id)" [class.active]="favourites.has(item.id)">
-              {{ favourites.has(item.id) ? '❤️' : '🤍' }}
+            <button 
+              mat-mini-fab 
+              color="accent"
+              (click)="toggleFavourite(item)"
+              class="favourite-btn"
+            >
+              <mat-icon>{{ favourites.has(item.id) ? 'favorite' : 'favorite_border' }}</mat-icon>
             </button>
           </div>
         </div>
 
-        <div class="card-content-section">
+        <div class="item-content">
           <div class="item-header">
             <h3 class="item-name">{{ item.name }}</h3>
-            <div class="item-price">₹{{ item.price }}</div>
+            <div class="item-badges">
+              <span class="badge" [ngClass]="item.veg ? 'veg-badge' : 'non-veg-badge'">
+                {{ item.veg ? '🟢 Veg' : '🔴 Non-Veg' }}
+              </span>
+              <span class="badge category-badge">
+                {{ item.categoryName }}
+              </span>
+            </div>
           </div>
-
-          <div class="item-badges">
-            <span class="veg-badge" [class.non-veg]="!item.veg">{{ item.veg ? '🟢 Veg' : '🔴 Non-Veg' }}</span>
-            <span class="category-badge">{{ item.categoryName }}</span>
-          </div>
-
+          
           <p class="item-description">{{ item.description }}</p>
-
-          <button class="elegant-add-cart-btn" (click)="addToCart(item)">
-            <span class="cart-icon">🛒</span> Add to Cart
-            <div class="btn-shine"></div>
-          </button>
+          
+          <div class="item-footer">
+            <div class="price-section">
+              <span class="item-price">₹{{ item.price }}</span>
+            </div>
+            
+            <button 
+              mat-raised-button 
+              class="add-to-cart-btn"
+              (click)="addToCart(item)"
+            >
+              <mat-icon>add_shopping_cart</mat-icon>
+              Add to Cart
+            </button>
+          </div>
         </div>
-
       </div>
     </div>
 
     <!-- Empty State -->
     <div class="empty-state" *ngIf="filteredMenu.length === 0">
-      <div class="empty-icon">🍽️</div>
+      <div class="empty-icon">🔍</div>
       <h3>No items found</h3>
-      <p>Try adjusting your search or filters</p>
+      <p>Try adjusting your search or filter criteria</p>
+      <button mat-raised-button color="primary" (click)="clearFilters()">
+        Clear Filters
+      </button>
     </div>
-
   </div>
 </div>

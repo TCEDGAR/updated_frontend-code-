@@ -24,6 +24,12 @@
 
     <!-- Right-side Auth/Admin Buttons -->
     <div style="display:flex;gap:12px;align-items:center;">
+      
+      <!-- Welcome Message (styled like nav links) -->
+      <a mat-button *ngIf="isLoggedIn" style="color:white;cursor:default;">
+        Welcome {{ userName }}
+      </a>
+
       <!-- Show when NOT logged in -->
       <ng-container *ngIf="!isLoggedIn">
         <a mat-button routerLink="/register" style="color:white;">

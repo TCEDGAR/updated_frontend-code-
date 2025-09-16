@@ -1,109 +1,192 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormsModule } from '@angular/forms';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CartService } from '../services/cart.service';
+import { SignalrService } from '../services/signalr.service';
 import { environment } from '../../environments/environments';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgFor, NgIf],
+  imports: [
+    CommonModule,
+    NgFor,
+    NgIf,
+    FormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatIconModule,
+    MatTooltipModule
+  ],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-
   menuItems: any[] = [];
+  searchTerm = '';
+  selectedCategory = '';
+  showFavouritesOnly = false;
   favourites: Set<number> = new Set();
-  searchTerm: string = '';
-  showFavouritesOnly: boolean = false;
-  cartItemCount: number = 0;
+  private menuApi = `${environment.apiUrl}/menu`;
+  availableCategories: string[] = [];
 
-  private imageMap: { [key: string]: string } = {
-    'Cold Coffee': 'assets/images/cold-coffee.jpg',
-    'Lemon Iced Tea': 'assets/images/lemon-iced-tea.jpg',
-    'Garlic Bread': 'assets/images/garlic-bread.jpg',
-    'Chicken Wings': 'assets/images/chicken.jpg',
-    'Margherita Pizza': 'assets/images/margherita-pizza.jpg',
-    'Veggie Supreme Pizza': 'assets/images/veggie-supreme-pizza.jpg',
-    'French Fries': 'assets/images/french-fries.jpg',
-    'Veg Sandwich': 'assets/images/veg-sandwich.jpg',
-    'Nachos': 'assets/images/nachos.jpg',
-    'Paneer Burger': 'assets/images/paneer-burger.jpg',
-    'White Sauce Pasta': 'assets/images/white-sauce-pasta.jpg',
-    'Beverage': 'assets/images/beverages.jpg',
-    'Starter': 'assets/images/starters.jpg',
-    'MainCourse': 'assets/images/maincourses.jpg',
-    'Snack': 'assets/images/snacks.jpg'
-  };
+  constructor(
+    private http: HttpClient,
+    private cartService: CartService,
+    private signalr: SignalrService,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {}
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar, private cartService: CartService) {}
-
-  ngOnInit(): void {
-    this.loadMenu();
-    this.refreshCartCount();
-  }
-
-  /** Load menu items from backend and map images + fix veg/non-veg */
-  loadMenu(): void {
-    const apiUrl = `${environment.apiUrl}/menu`;
-    this.http.get<any[]>(apiUrl).subscribe({
-      next: data => {
-        this.menuItems = data.map(item => ({
-          ...item,
-          // Coerce veg to boolean (fixes Lemon Iced Tea showing non-veg)
-          veg: item.veg === true || item.veg === 'true',
-          imageUrl: item.imageUrl || this.imageMap[item.name] || this.imageMap[item.categoryName] || 'assets/images/default-food.jpg'
-        }));
-      },
-      error: err => {
-        console.error('Error loading menu:', err);
-        this.snackBar.open('❌ Failed to load menu', 'Close', { duration: 3000 });
-      }
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const category = params['category'];
+      this.selectedCategory = category || '';
+      console.log('Selected category from URL:', this.selectedCategory);
+      this.fetchMenu();
     });
-  }
 
-  /** Add item to backend cart */
-  addToCart(item: any): void {
-    this.cartService.addToCart(item.id).subscribe({
-      next: () => {
-        this.snackBar.open(`${item.name} added to cart 🛒`, 'Close', { duration: 2000 });
-        this.refreshCartCount();
-      },
-      error: err => {
-        console.error('Add to cart failed:', err);
-        this.snackBar.open('❌ Failed to add to cart', 'Close', { duration: 2000 });
-      }
-    });
-  }
-
-  /** Toggle favourite locally */
-  toggleFavourite(itemId: number): void {
-    if (this.favourites.has(itemId)) {
-      this.favourites.delete(itemId);
-      this.snackBar.open('Removed from favourites ❤️‍🩹', 'Close', { duration: 1500 });
-    } else {
-      this.favourites.add(itemId);
-      this.snackBar.open('Added to favourites ❤️', 'Close', { duration: 1500 });
+    if (localStorage.getItem('token')) {
+      this.signalr.startConnection();
+    }
+    
+    const favs = localStorage.getItem('favourites');
+    if (favs) {
+      this.favourites = new Set(JSON.parse(favs));
     }
   }
 
-  /** Filtered menu based on search and favourites */
-  get filteredMenu(): any[] {
-    return this.menuItems.filter(item => {
-      const matchesSearch = item.name.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesFav = !this.showFavouritesOnly || this.favourites.has(item.id);
-      return matchesSearch && matchesFav;
+  fetchMenu() {
+    this.http.get<any[]>(this.menuApi).subscribe({
+      next: res => {
+        this.menuItems = res;
+        console.log('Menu items loaded:', this.menuItems);
+        console.log('Available categories:', this.menuItems.map(item => item.categoryName));
+        this.extractCategories();
+      },
+      error: err => {
+        console.error('Error fetching menu:', err);
+        this.snackBar.open('❌ Failed to load menu items', 'Close', { duration: 3000 });
+      }
     });
   }
 
-  /** Refresh live cart count from backend */
-  refreshCartCount(): void {
-    this.cartService.getCart().subscribe({
-      next: cartData => this.cartItemCount = cartData?.length || 0,
-      error: err => console.error('Failed to fetch cart count', err)
+  extractCategories() {
+    const categories = new Set<string>();
+    this.menuItems.forEach(item => {
+      if (item.categoryName) {
+        categories.add(item.categoryName);
+      }
     });
+    this.availableCategories = Array.from(categories).sort();
+  }
+
+  filterByCategory(category: string) {
+    this.selectedCategory = category;
+    this.router.navigate(['/menu'], { queryParams: { category } });
+  }
+
+  clearCategoryFilter() {
+    this.selectedCategory = '';
+    this.router.navigate(['/menu']);
+  }
+
+  addToCart(item: any) {
+    this.cartService.addToCart(item.id).subscribe({
+      next: () => {
+        this.snackBar.open(`✅ Added ${item.name} to cart`, 'Close', { 
+          duration: 2000,
+          panelClass: ['success-snackbar']
+        });
+      },
+      error: () => {
+        this.snackBar.open('❌ Failed to add item to cart', 'Close', { 
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }
+
+  get filteredMenu() {
+    return this.menuItems.filter(item => {
+      // ✅ Category filter with normalization
+      const matchesCategory =
+        !this.selectedCategory ||
+        this.normalizeCategoryName(item.categoryName) === this.normalizeCategoryName(this.selectedCategory);
+
+      const matchesSearch =
+        !this.searchTerm ||
+        item.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.categoryName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        (item.description && item.description.toLowerCase().includes(this.searchTerm.toLowerCase()));
+
+      const matchesFavourite =
+        !this.showFavouritesOnly || this.favourites.has(item.id);
+
+      return matchesCategory && matchesSearch && matchesFavourite;
+    });
+  }
+
+  // ✅ Helper method to normalize category names
+  private normalizeCategoryName(categoryName: string): string {
+    const normalized = categoryName.toLowerCase().trim();
+
+    const categoryMappings: { [key: string]: string } = {
+      'beverage': 'beverage',
+      'beverages': 'beverage',
+      'drinks': 'beverage',
+      'drink': 'beverage',
+      'starter': 'starter',
+      'starters': 'starter',
+      'appetizer': 'starter',
+      'appetizers': 'starter',
+      'main course': 'maincourse',
+      'maincourse': 'maincourse',
+      'main': 'maincourse',
+      'entree': 'maincourse',
+      'entrees': 'maincourse',
+      'snack': 'snack',
+      'snacks': 'snack',
+      'dessert': 'dessert',
+      'desserts': 'dessert',
+      'sweet': 'dessert'
+    };
+
+    return categoryMappings[normalized] || normalized;
+  }
+
+  toggleFavourite(item: any) {
+    if (this.favourites.has(item.id)) {
+      this.favourites.delete(item.id);
+      this.snackBar.open(`💔 Removed ${item.name} from favourites`, 'Close', { duration: 1500 });
+    } else {
+      this.favourites.add(item.id);
+      this.snackBar.open(`❤️ Added ${item.name} to favourites`, 'Close', { duration: 1500 });
+    }
+
+    localStorage.setItem('favourites', JSON.stringify([...this.favourites]));
+  }
+
+  clearFilters() {
+    this.searchTerm = '';
+    this.showFavouritesOnly = false;
+    this.selectedCategory = '';
+    this.router.navigate(['/menu']);
+  }
+
+  // ✅ Back to home
+  goHome() {
+    this.router.navigate(['/']);
   }
 }

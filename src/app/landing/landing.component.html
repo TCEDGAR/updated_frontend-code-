@@ -1,4 +1,4 @@
-<!-- Elegant Hero Section -->
+<!-- Hero Section -->
 <div class="hero-section">
   <!-- Background Elements -->
   <div class="hero-background">
@@ -7,68 +7,45 @@
     <div class="floating-food food-2"></div>
     <div class="floating-food food-3"></div>
   </div>
-  
+
   <!-- Hero Content -->
   <div class="hero-content">
     <h1 class="hero-title">Delicious Food Delivered Fresh To You!</h1>
-    <p class="hero-subtitle">Reliably delivering extraordinary experiences, creating lasting impressions every time.</p>
-    <button class="elegant-cta-button" (click)="goToMenu()">Order Now</button>
+    <p class="hero-subtitle">
+      Reliably delivering extraordinary experiences, creating lasting impressions
+      every time.
+    </p>
+    <button class="elegant-cta-button" (click)="goToMenu()">
+      Order Now
+    </button>
   </div>
 </div>
 
-<!-- Elegant Categories Section -->
+<!-- Categories Section -->
 <section class="categories-section">
   <div class="app-container">
     <div class="section-header">
       <h2 class="section-title">Our Menu Categories</h2>
       <p class="section-subtitle">Explore our delicious selection</p>
     </div>
-    
+
     <div class="category-grid">
-      <div class="elegant-category-card" (click)="goToMenu('Beverage')">
+      <!-- 🔥 Dynamic categories -->
+      <div
+        class="elegant-category-card"
+        *ngFor="let cat of categories"
+        (click)="goToMenu(cat.name)"
+      >
         <div class="card-image">
-          <img src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg" alt="Beverage">
+          <img
+            [src]="cat.imageUrl || 'assets/images/default-food.jpg'"
+            [alt]="cat.name"
+          />
           <div class="card-overlay"></div>
         </div>
         <div class="card-content">
-          <h3>Beverage</h3>
-          <p>Explore our Beverage selection</p>
-          <div class="card-arrow">→</div>
-        </div>
-      </div>
-      
-      <div class="elegant-category-card" (click)="goToMenu('Starter')">
-        <div class="card-image">
-          <img src="https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg" alt="Starter">
-          <div class="card-overlay"></div>
-        </div>
-        <div class="card-content">
-          <h3>Starter</h3>
-          <p>Explore our Starter selection</p>
-          <div class="card-arrow">→</div>
-        </div>
-      </div>
-      
-      <div class="elegant-category-card" (click)="goToMenu('MainCourse')">
-        <div class="card-image">
-          <img src="https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg" alt="Main Course">
-          <div class="card-overlay"></div>
-        </div>
-        <div class="card-content">
-          <h3>Main Course</h3>
-          <p>Explore our Main Course selection</p>
-          <div class="card-arrow">→</div>
-        </div>
-      </div>
-      
-      <div class="elegant-category-card" (click)="goToMenu('Snack')">
-        <div class="card-image">
-          <img src="https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg" alt="Snack">
-          <div class="card-overlay"></div>
-        </div>
-        <div class="card-content">
-          <h3>Snack</h3>
-          <p>Explore our Snack selection</p>
+          <h3>{{ cat.name }}</h3>
+          <p>Explore our {{ cat.name }} selection</p>
           <div class="card-arrow">→</div>
         </div>
       </div>

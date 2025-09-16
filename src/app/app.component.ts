@@ -23,8 +23,14 @@ import { CommonModule } from '@angular/common';
 export class AppComponent {
   constructor(private router: Router) {}
 
+  // Check if user is logged in
   get isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
+  }
+
+  // Get username from localStorage (set during login)
+  get userName(): string | null {
+    return localStorage.getItem('username');
   }
 
   goToMenu() {
@@ -33,6 +39,7 @@ export class AppComponent {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('username'); // clear username on logout
     this.router.navigate(['/']); // Navigate to home after logout
   }
 }

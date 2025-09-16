@@ -20,47 +20,48 @@
 
     <!-- Cart Content -->
     <div class="cart-content" *ngIf="cart?.items?.length > 0">
+      <!-- Items Section -->
       <div class="cart-items-section">
         <div class="cart-item elegant-card" *ngFor="let item of cart.items">
+          <!-- Item Image -->
           <div class="item-image-container">
             <img [src]="item.menuItem?.imageUrl || 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg'" 
                  [alt]="item.menuItem?.name" class="item-image" />
           </div>
 
+          <!-- Item Details -->
           <div class="item-details">
             <h3 class="item-name">{{ item.menuItem?.name }}</h3>
             <p class="item-description">{{ item.menuItem?.description }}</p>
-            <div class="item-badges">
-              <span class="elegant-chip" [ngClass]="item.menuItem?.veg ? 'veg-chip' : 'non-veg-chip'">
-                {{ item.menuItem?.veg ? '🟢 Veg' : '🔴 Non-Veg' }}
-              </span>
-            </div>
           </div>
 
+          <!-- Item Actions -->
           <div class="item-actions">
             <div class="price-display">
               <span class="item-price">₹{{ item.menuItem?.price }}</span>
               <span class="total-price">₹{{ (item.menuItem?.price || 0) * (item.quantity || 0) }}</span>
             </div>
 
+            <!-- Quantity Controls -->
             <div class="quantity-controls">
-              <button mat-mini-fab color="primary" (click)="decrease(item)" [disabled]="item.quantity <= 1" class="quantity-btn">
+              <button mat-mini-fab color="primary" (click)="decrease(item)" [disabled]="item.quantity <= 1">
                 <mat-icon>remove</mat-icon>
               </button>
               <span class="quantity-display">{{ item.quantity }}</span>
-              <button mat-mini-fab color="primary" (click)="increase(item)" class="quantity-btn">
+              <button mat-mini-fab color="primary" (click)="increase(item)">
                 <mat-icon>add</mat-icon>
               </button>
             </div>
 
-            <button mat-icon-button color="warn" (click)="removeItem(item)" class="remove-btn" matTooltip="Remove from cart">
+            <!-- Remove Button -->
+            <button mat-icon-button color="warn" (click)="removeItem(item.menuItemId)" matTooltip="Remove from cart">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Order Summary -->
+      <!-- Order Summary Section -->
       <div class="order-summary-section">
         <div class="order-summary elegant-card">
           <h2 class="summary-title">Order Summary</h2>
@@ -79,9 +80,10 @@
           <div class="summary-divider"></div>
           <div class="summary-total">
             <span>Total</span>
-            <span>₹{{ finalTotal }}</span>
+            <span>₹{{ totalAmount + (totalAmount*0.05) + 50 }}</span>
           </div>
 
+          <!-- Checkout Button -->
           <button mat-raised-button color="primary" class="checkout-button elegant-button" (click)="checkout()">
             <mat-icon>payment</mat-icon>
             Proceed to Checkout

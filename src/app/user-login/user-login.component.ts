@@ -46,17 +46,27 @@ export class UserLoginComponent {
 
     this.http.post<any>(this.apiUrl, this.loginForm.value).subscribe({
       next: (res) => {
+        // Save token + username (from form)
         localStorage.setItem('token', res.token);
-        this.snackBar.open('✅ Login successful!', 'Close', { duration: 3000 });
+        localStorage.setItem('username', this.loginForm.value.username);
+
+        this.snackBar.open(`✅ Welcome, ${this.loginForm.value.username}!`, 'Close', {
+          duration: 3000
+        });
+
         this.router.navigate(['/menu']);
       },
       error: (err) => {
-        this.snackBar.open('❌ Login failed: ' + (err.error?.title || err.message), 'Close', { duration: 3000 });
+        this.snackBar.open(
+          '❌ Login failed: ' + (err.error?.title || err.message),
+          'Close',
+          { duration: 3000 }
+        );
       }
     });
   }
 
   goToRegister() {
-    this.router.navigate(['/register']); // Adjust route if needed
+    this.router.navigate(['/register']);
   }
 }
