@@ -10,6 +10,9 @@
   border-radius: 16px;
 }
 
+/* =============================
+   Warning Icon
+============================= */
 .dialog-icon {
   margin-bottom: 20px;
 }
@@ -32,6 +35,9 @@
   50% { transform: scale(1.05); }
 }
 
+/* =============================
+   Title & Message
+============================= */
 .dialog-title {
   font-family: 'Playfair Display', serif !important;
   font-weight: 600;
@@ -47,19 +53,25 @@
   line-height: 1.5;
 }
 
+/* =============================
+   Actions (Buttons)
+============================= */
 .dialog-actions {
   gap: 15px;
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 
+/* Cancel button */
 .cancel-btn {
   font-weight: 600;
   color: rgba(255, 255, 255, 0.8) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  border-radius: 12px;
-  padding: 12px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 12px !important;
+  padding: 10px 22px;
   transition: all 0.3s ease;
   font-family: 'Inter', sans-serif;
   background: rgba(255, 255, 255, 0.05) !important;
@@ -71,14 +83,15 @@
   color: #ffffff !important;
 }
 
+/* Confirm (Save) button */
 .confirm-btn {
   font-weight: 600;
-  background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
   color: white !important;
-  border-radius: 12px;
-  padding: 12px 24px;
+  border-radius: 12px !important;
+  padding: 10px 22px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
   font-family: 'Inter', sans-serif;
   display: flex;
   align-items: center;
@@ -86,9 +99,9 @@
 }
 
 .confirm-btn:hover {
-  background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+  background: linear-gradient(135deg, #059669, #047857) !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(20,184,166,0.4);
 }
 
 .confirm-btn mat-icon {
@@ -97,21 +110,17 @@
   height: 18px;
 }
 
-/* Responsive Design */
+/* =============================
+   Responsive
+============================= */
 @media (max-width: 768px) {
   .confirm-dialog {
     min-width: 300px;
     padding: 15px;
   }
-  
-  .dialog-title {
-    font-size: 18px;
-  }
-  
-  .dialog-message {
-    font-size: 14px;
-  }
-  
+
+  .dialog-title { font-size: 18px; }
+  .dialog-message { font-size: 14px; }
   .warning-icon {
     font-size: 36px !important;
     width: 36px !important;

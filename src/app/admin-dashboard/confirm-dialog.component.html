@@ -1,12 +1,26 @@
-<div class="dialog-container">
-  <h2 mat-dialog-title>{{ data.title || 'Confirm' }}</h2>
+<div class="confirm-dialog">
+  <div class="dialog-icon">
+    <mat-icon class="warning-icon">warning</mat-icon>
+  </div>
 
-  <mat-dialog-content>
+  <h2 mat-dialog-title class="dialog-title">
+    {{ data.title || 'Confirm' }}
+  </h2>
+
+  <mat-dialog-content class="dialog-message">
     <p>{{ data.message || 'Are you sure?' }}</p>
   </mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <button mat-stroked-button type="button" (click)="close(false)">Cancel</button>
-    <button mat-flat-button color="warn" type="button" (click)="close(true)">Yes</button>
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <!-- Cancel -->
+    <button mat-stroked-button type="button" (click)="close(false)" class="cancel-btn">
+      Cancel
+    </button>
+
+    <!-- Confirm / Save -->
+    <button mat-flat-button color="primary" type="button" (click)="close(true)" class="confirm-btn">
+      <mat-icon>check</mat-icon>
+      {{ data.confirmText || 'Save' }}
+    </button>
   </mat-dialog-actions>
 </div>

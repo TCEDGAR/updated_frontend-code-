@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" class="mat-elevation-z4 elegant-navbar" style="padding:0 16px;">
   <div class="app-container" style="display:flex;align-items:center;gap:24px;width:100%;">
-    
+
     <!-- Brand -->
     <div style="display:flex;align-items:center;gap:12px;">
       <a routerLink="/" style="display:flex;align-items:center;text-decoration:none;color:white;">
@@ -11,12 +11,20 @@
 
     <!-- Navigation Links -->
     <nav style="display:flex;gap:14px;margin-left:24px;">
+      <!-- Always visible -->
       <a mat-button routerLink="/" style="color:white;">Home</a>
       <a mat-button routerLink="/menu" style="color:white;">
         <mat-icon>restaurant_menu</mat-icon> Menu
       </a>
-      <a mat-button routerLink="/cart" style="color:white;">
+
+      <!-- User Only -->
+      <a mat-button *ngIf="isLoggedIn && !isAdmin" routerLink="/cart" style="color:white;">
         <mat-icon>shopping_cart</mat-icon> Cart
+      </a>
+
+      <!-- Admin Only -->
+      <a mat-button *ngIf="isAdmin" routerLink="/admin-dashboard" style="color:white;">
+        <mat-icon>admin_panel_settings</mat-icon> Admin Dashboard
       </a>
     </nav>
 
@@ -24,10 +32,10 @@
 
     <!-- Right-side Auth/Admin Buttons -->
     <div style="display:flex;gap:12px;align-items:center;">
-      
-      <!-- Welcome Message (styled like nav links) -->
+
+      <!-- Welcome Message -->
       <a mat-button *ngIf="isLoggedIn" style="color:white;cursor:default;">
-        Welcome {{ userName }}
+        Welcome {{ isAdmin ? 'Admin ' + userName : userName }}
       </a>
 
       <!-- Show when NOT logged in -->
@@ -38,19 +46,18 @@
         <a mat-button routerLink="/user-login" style="color:white;">
           <mat-icon>login</mat-icon> Sign In
         </a>
+        <a mat-button routerLink="/admin-login" style="color:white;">
+          <mat-icon>admin_panel_settings</mat-icon> Admin
+        </a>
       </ng-container>
 
-      <!-- Show when logged in -->
+      <!-- Logout Button -->
       <ng-container *ngIf="isLoggedIn">
         <button mat-button (click)="logout()" style="color:white;">
           <mat-icon>account_circle</mat-icon> Logout
         </button>
       </ng-container>
 
-      <!-- Admin Login always visible -->
-      <a mat-button routerLink="/admin-login" style="color:white;">
-        <mat-icon>admin_panel_settings</mat-icon> Admin
-      </a>
     </div>
   </div>
 </mat-toolbar>
